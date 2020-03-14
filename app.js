@@ -1,7 +1,13 @@
 const http = require("http");
 const fs = require("fs");
 
-const myReadStream = fs.createReadStream(__dirname + "/readMe.txt", "utf8");
-const myWriteStream = fs.createWriteStream(__dirname + "/writeMe.txt");
+let server = http.createServer((req, res) => {
+	console.log(`Request was me: ${req.url}`);
+	res.writeHead(200, { "Content-Type": "text/plain" });
 
-myReadStream.pipe(myWriteStream);
+	const myReadStream = fs.createReadStream(__dirname + "/readMe.txt", "utf8");
+	myReadStream.pipe(res);
+});
+
+server.listen(5050, "127.0.0.1");
+console.log("Listening to port 5050");
